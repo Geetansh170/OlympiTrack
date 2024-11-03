@@ -1,0 +1,6 @@
+pandasql
+matplotlib
+pandas
+numpy
+seaborn
+nbstripout
