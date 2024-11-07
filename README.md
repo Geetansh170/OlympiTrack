@@ -52,7 +52,7 @@ Why?
 
 The analysis aims to highlight advancements in women's participation in sports, demonstrating progress in inclusion and representation. By examining trends over time, we can assess the effectiveness of initiatives aimed at increasing female participation and identify sports where participation still lags. This information informs sports organizations and advocates about the current situation of women’s sports. This will help in gender equity in olympics.
 
-Questions Rudraksh
+Questions Rudraksh (Phase 1)
 
 Is the average age of athletes increasing or not? 
 
@@ -69,6 +69,8 @@ This, in general, can help people to decide which sports to select as a career i
 
 We are showing an average of (max-min) values of age to do all our analysis.
 
+Questions Rudraksh (Phase 2)
 
+1) Table Tennis and Tennis are similar yet different sports. The players I have seen in both games seem to have different builds. The hypothesis is that we can build a model using Height, Weight, and athlete’s country to predict which sport they belong to.
 
-Please put your team's information (e.g. team members name, ub number, email) in this file. (Delete this message after you have done so)
+2) In athletics, height, weight, age, and country are major indicators of success in the Olympics. We have made models to achieve the same. (Predict the success/failure of athletics based on their height weight, and Country they belong to.)
