@@ -37,8 +37,7 @@ def preprocess_data(df):
     df = (df - df.min()) / (df.max() - df.min())  # Normalize data
     return df
 
-# Streamlit App UI
-st.title("CSV Upload and Data Analysis with SQLite")
+st.title("Olympics Trends")
 
 # Step 1: Upload CSV
 uploaded_file = st.file_uploader("Upload a CSV file", type=["csv"])
