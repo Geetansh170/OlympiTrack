@@ -99,6 +99,75 @@ def create_tables():
                 population INTEGER
             )
         ''')
+        cursor.execute('''
+            CREATE TABLE IF NOT EXISTS Pre_Event_Results (
+                result_id INTEGER PRIMARY KEY,
+                event_title TEXT,
+                edition INTEGER,
+                edition_id INTEGER,
+                sport TEXT,
+                participants INTEGER,
+                participant_countries TEXT,
+                men INTEGER,
+                women INTEGER,
+                year INTEGER,
+                olympic_type TEXT,
+                summer INTEGER,
+                winter INTEGER
+            )
+        ''')
+
+        # Table for Pre_Population_Total
+        cursor.execute('''
+            CREATE TABLE IF NOT EXISTS Pre_Population_Total (
+                country_name TEXT,
+                year INTEGER,
+                count INTEGER,
+                PRIMARY KEY (country_name, year)
+            )
+        ''')
+
+        # Table for Pre_Athlete_Biography
+        cursor.execute('''
+            CREATE TABLE IF NOT EXISTS Pre_Athlete_Biography (
+                athlete_id INTEGER PRIMARY KEY,
+                name TEXT,
+                sex TEXT,
+                born TEXT,
+                height REAL,
+                weight REAL,
+                country TEXT,
+                country_noc TEXT
+            )
+        ''')
+
+        cursor.execute('''
+            CREATE TABLE IF NOT EXISTS Pre_Athlete_Events_Details (
+                edition INTEGER,
+                edition_id INTEGER,
+                country_noc TEXT,
+                sport TEXT,
+                event TEXT,
+                athlete_id INTEGER,
+                medal TEXT,
+                isTeamSport INTEGER,
+                year INTEGER,
+                olympic_type TEXT,
+                men INTEGER,
+                women INTEGER,
+                PRIMARY KEY (edition, edition_id, athlete_id, event)
+            )
+        ''')
+
+        cursor.execute('''
+            CREATE TABLE IF NOT EXISTS Pre_Country_Profile (
+                noc TEXT PRIMARY KEY,
+                country TEXT
+            )
+        ''')
+
+        conn.commit()
+        print("Tables created successfully!")
 
 def upload_data_in_db():
     """
@@ -158,6 +227,6 @@ def execute_query(query, params=()):
 
 # Example Usage
 if __name__ == "__main__":
-    # create_tables()
+    create_tables()
     # Upload data from CSV files to the database
-    upload_data_in_db()
+    # upload_data_in_db()
