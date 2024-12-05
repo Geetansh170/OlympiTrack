@@ -9,4 +9,4 @@ xgboost
 streamlit
 watchdog
 scipy
-sklearn
+tensorflow
