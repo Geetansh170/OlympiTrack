@@ -27,13 +27,8 @@ st.warning("This will truncate Preprcoessed tables")
 if st.button("Run Preprocessing"):
     preprocess_data()
 
-st.write("**New Tables Created:**")
-st.write("- `Medal_Tally_Processed` (Total medals per country and year)")
-st.write("- `Athlete_Age_At_Competition` (Athletes' ages during competition)")
-st.write("- `Country_Medals_GDP` (Medals and GDP data combined)")
-
 st.header("Preprocessed available Tables")
-tables = ["PreprocessedTable1", "PreprocessedTable2"]
+tables = ["Pre_Event_Results", "Pre_Population_Total", "Pre_Athlete_Biography", "Pre_Athlete_Events_Details", "Pre_Country_Profile"]
 
 selected_table = st.selectbox("Select Table to View/Modify", tables)
 if selected_table:
