@@ -1,20 +1,25 @@
 import sqlite3
 import pandas as pd
+import pandasql as ps
 from scipy.stats import linregress
 from sklearn.cluster import KMeans
 from sklearn.preprocessing import StandardScaler
-from sklearn.metrics import silhouette_score, davies_bouldin_score
+from sklearn.metrics import silhouette_score, davies_bouldin_score, confusion_matrix, f1_score, classification_report, accuracy_score
 import seaborn as sns
 import matplotlib.pyplot as plt
 from dbcrud import create_entry, delete_entry, read_entries, update_entry
 import numpy as np
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
-from sklearn.metrics import r2_score, mean_absolute_error
+from sklearn.metrics import r2_score, mean_absolute_error, mean_squared_error
 import matplotlib.pyplot as plt
 import tensorflow as tf
 from tensorflow import keras
 from tensorflow.keras import layers
+from sklearn.tree import DecisionTreeRegressor, plot_tree
+from sklearn.ensemble import RandomForestRegressor,GradientBoostingClassifier, RandomForestClassifier
+from sklearn.preprocessing import LabelEncoder
+from sklearn.metrics import confusion_matrix, roc_curve, auc
 
 DB_FILE = "app/olympics_data.db"
 
@@ -213,7 +218,269 @@ def hypothesis2(st):
     st.info(f"Future Predictions (2024-2040): {future_pred.flatten()}")
 
 def hypothesis3(st):
-    pass
+    Pre_Athlete_Events_Details = read_entries("Pre_Athlete_Events_Details")
+    Pre_Country_Profile = read_entries("Pre_Country_Profile")
+    Pre_Population_Total = read_entries("Pre_Population_Total")
+
+    query_usa = """
+        SELECT
+        year,
+        country_noc,
+        isTeamSport,
+        COUNT(medal) AS medal_count
+        FROM Pre_Athlete_Events_Details
+        WHERE medal != 'no medal'
+        AND year IS NOT NULL
+        AND country_noc IN ('usa')
+        GROUP BY year, country_noc, isTeamSport
+        ORDER BY year, country_noc, isTeamSport;
+        """
+
+    medals_yearwise_data_usa = ps.sqldf(query_usa, locals())
+
+    query_ger = """
+        SELECT
+        year,
+        country_noc,
+        isTeamSport,
+        COUNT(medal) AS medal_count
+        FROM Pre_Athlete_Events_Details
+        WHERE medal != 'no medal'
+        AND year IS NOT NULL
+        AND country_noc IN ('ger')
+        GROUP BY year, country_noc, isTeamSport
+        ORDER BY year, country_noc, isTeamSport;
+        """
+
+    medals_yearwise_data_ger = ps.sqldf(query_ger, locals())
+
+    print(medals_yearwise_data_ger)
+
+    query_ita = """
+        SELECT
+        year,
+        country_noc,
+        isTeamSport,
+        COUNT(medal) AS medal_count
+        FROM Pre_Athlete_Events_Details
+        WHERE medal != 'no medal'
+        AND year IS NOT NULL
+        AND country_noc IN ('ita')
+        GROUP BY year, country_noc, isTeamSport
+        ORDER BY year, country_noc, isTeamSport;
+        """
+
+    medals_yearwise_data_ita = ps.sqldf(query_ita, locals())
+
+    print(medals_yearwise_data_ita)
+
+
+    query_aus = """
+        SELECT
+        year,
+        country_noc,
+        isTeamSport,
+        COUNT(medal) AS medal_count
+        FROM Pre_Athlete_Events_Details
+        WHERE medal != 'no medal'
+        AND year IS NOT NULL
+        AND country_noc IN ('aus')
+        GROUP BY year, country_noc, isTeamSport
+        ORDER BY year, country_noc, isTeamSport;
+        """
+
+    medals_yearwise_data_aus = ps.sqldf(query_aus, locals())
+
+    print(medals_yearwise_data_aus)
+
+
+    query_ind = """
+        SELECT
+        year,
+        country_noc,
+        isTeamSport,
+        COUNT(medal) AS medal_count
+        FROM Pre_Athlete_Events_Details
+        WHERE medal != 'no medal'
+        AND year IS NOT NULL
+        AND country_noc IN ('ind')
+        GROUP BY year, country_noc, isTeamSport
+        ORDER BY year, country_noc, isTeamSport;
+        """
+
+    medals_yearwise_data_ind = ps.sqldf(query_ind, locals())
+
+    print(medals_yearwise_data_ind)
+
+    medals_yearwise_data_aus['isTeamSport'] = medals_yearwise_data_aus['isTeamSport'].apply(lambda x: 1 if x else 0)
+
+    X = medals_yearwise_data_aus[['year', 'isTeamSport']]
+    y = medals_yearwise_data_aus['medal_count']
+
+    # Split dataset into training 80% and testing 20%
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+    # Max depth set to 5 to avoid overfitting
+    reg_tree = DecisionTreeRegressor(max_depth=5, random_state=42)
+
+    reg_tree.fit(X_train, y_train)
+
+    plt.figure(figsize=(10, 8))
+
+    # Using plot tree to visualize decision tree
+    plot_tree(reg_tree, feature_names=['year', 'isTeamSport'], filled=True)
+    plt.show()
+
+    st.pyplot(plt)
+
+    y_pred_tree = reg_tree.predict(X_test)
+    st.info("Decision Tree- AUSTRALIA")
+
+    # R² score measures the variance in the data
+    st.info(f'R² score: {r2_score(y_test, y_pred_tree)}')
+    st.info(f'Mean Squared Error: {mean_squared_error(y_test, y_pred_tree)}')
+    st.info("-------------")
+
+    reg_random_forest = RandomForestRegressor(n_estimators=100, random_state=42)
+
+    reg_random_forest.fit(X_train, y_train)
+
+    y_pred_rf = reg_random_forest.predict(X_test)
+    st.info("Random Forest Results- AUSTRALIA")
+
+    # Mean Squared Error masures the average squared difference between the predicted and actual values.
+    st.info(f'R² score: {r2_score(y_test, y_pred_rf)}')
+    st.info(f'Mean Squared Error: {mean_squared_error(y_test, y_pred_rf)}')
+
+
+    medals_yearwise_data_ind['isTeamSport'] = medals_yearwise_data_ind['isTeamSport'].apply(lambda x: 1 if x else 0)
+
+    X = medals_yearwise_data_ind[['year', 'isTeamSport']]
+    y = medals_yearwise_data_ind['medal_count']
+
+    # Split dataset into training 80% and testing 20%
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+    # Max depth set to 5 to avoid overfitting
+    reg_tree = DecisionTreeRegressor(max_depth=5, random_state=42)
+
+    reg_tree.fit(X_train, y_train)
+
+    plt.figure(figsize=(10, 8))
+
+    # Using plot tree to visualize decision tree
+    plot_tree(reg_tree, feature_names=['year', 'isTeamSport'], filled=True)
+    plt.show()
+
+    st.pyplot(plt)
+
+    y_pred_tree = reg_tree.predict(X_test)
+    st.info("Decision Tree- INDIA")
+
+    # R² score measures the variance in the data
+    st.info(f'R² score: {r2_score(y_test, y_pred_tree)}')
+    st.info(f'Mean Squared Error: {mean_squared_error(y_test, y_pred_tree)}')
+    st.info("-------------")
+
+    reg_random_forest = RandomForestRegressor(n_estimators=100, random_state=42)
+
+    reg_random_forest.fit(X_train, y_train)
+
+    y_pred_rf = reg_random_forest.predict(X_test)
+    st.info("Random Forest Results- INDIA")
+
+    # Mean Squared Error masures the average squared difference between the predicted and actual values.
+    st.info(f'R² score: {r2_score(y_test, y_pred_rf)}')
+    st.info(f'Mean Squared Error: {mean_squared_error(y_test, y_pred_rf)}')
+
+
+
 
 def hypothesis4(st):
-    pass
+    Pre_Athlete_Events_Details = read_entries("Pre_Athlete_Events_Details")
+    Pre_Athlete_Biography = read_entries("Pre_Athlete_Biography")
+
+    Athletes_Data = Pre_Athlete_Events_Details.copy()
+    Athletes_Data = Athletes_Data[Athletes_Data['olympic_type'] == 'summer']
+    Athletes_Data = pd.merge(Athletes_Data, Pre_Athlete_Biography, on='athlete_id', how='left')
+    Athletes_Data['sex'] = Athletes_Data.apply(lambda row: 'M' if row['men'] == 1 else 'F', axis=1)
+    Athletes_Data['birth_year'] = Athletes_Data['born'].str.extract(r'(\d{4})')
+    Athletes_Data['birth_year'] = pd.to_numeric(Athletes_Data['birth_year'], errors='coerce')
+    Athletes_Data['year'] = pd.to_numeric(Athletes_Data['year'], errors='coerce')
+    Athletes_Data['age'] = Athletes_Data['year'] - Athletes_Data['birth_year']
+
+    Athletes_Data = Athletes_Data[['age', 'country', 'year', 'sex', 'sport', 'height', 'weight', 'medal', 'isTeamSport']]
+
+    Athletes_Data['height'] = pd.to_numeric(Athletes_Data['height'], errors='coerce')
+    Athletes_Data['weight'] = pd.to_numeric(Athletes_Data['weight'], errors='coerce')
+
+    Athletes_Data = Athletes_Data.dropna(subset=['height', 'weight', 'medal', 'age', 'country'])
+
+    athletics_data = Athletes_Data[Athletes_Data['sport'] == 'athletics']
+    athletics_data['has_medal'] = athletics_data['medal'].apply(lambda x: 1 if x != 'no medal' else 0)
+
+    X = athletics_data[['height', 'weight', 'age', 'country']]
+    y = athletics_data['has_medal']
+
+    country_encoder = LabelEncoder()
+    X['country'] = country_encoder.fit_transform(X['country'])
+
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+    models = {
+        "Random Forest": RandomForestClassifier(),
+        "Gradient Boosting": GradientBoostingClassifier(),
+    }
+
+    for name, model in models.items():
+        model.fit(X_train, y_train)
+        y_pred = model.predict(X_test)
+        accuracy = accuracy_score(y_test, y_pred)
+        f1 = f1_score(y_test, y_pred, average='weighted')
+        st.info(f"---{name}---")
+        st.info(f"Accuracy: {accuracy}")
+        st.info(f"F1 Score: {f1}")
+
+    # Iterate through models to evaluate
+    for name, model in models.items():
+        # Predict on the test set
+        y_pred = model.predict(X_test)
+        y_pred_proba = model.predict_proba(X_test)[:, 1] if hasattr(model, "predict_proba") else None
+
+        # Confusion Matrix
+        cm = confusion_matrix(y_test, y_pred)
+        fig, ax = plt.subplots(figsize=(6, 4))
+        im = ax.imshow(cm, interpolation="nearest", cmap="Blues")
+        ax.figure.colorbar(im, ax=ax)
+        ax.set(xticks=np.arange(cm.shape[1]),
+            yticks=np.arange(cm.shape[0]),
+            xticklabels=["No Medal", "Has Medal"],
+            yticklabels=["No Medal", "Has Medal"],
+            title=f"Confusion Matrix for {name}",
+            ylabel="Actual",
+            xlabel="Predicted")
+
+        # Annotate the confusion matrix with numbers
+        fmt = 'd'
+        thresh = cm.max() / 2.
+        for i in range(cm.shape[0]):
+            for j in range(cm.shape[1]):
+                ax.text(j, i, format(cm[i, j], fmt),
+                        ha="center", va="center",
+                        color="white" if cm[i, j] > thresh else "black")
+        plt.show()
+        st.pyplot(plt)
+
+        # ROC Curve (if model supports predict_proba)
+        if y_pred_proba is not None:
+            fpr, tpr, _ = roc_curve(y_test, y_pred_proba)
+            roc_auc = auc(fpr, tpr)
+            plt.figure(figsize=(6, 4))
+            plt.plot(fpr, tpr, color="blue", lw=2, label=f"ROC curve (AUC = {roc_auc:.2f})")
+            plt.plot([0, 1], [0, 1], color="gray", lw=2, linestyle="--")  # Diagonal line
+            plt.title(f"ROC Curve for {name}")
+            plt.xlabel("False Positive Rate")
+            plt.ylabel("True Positive Rate")
+            plt.legend(loc="lower right")
+            plt.show()
+            st.pyplot(plt)
