@@ -105,13 +105,13 @@ def upload_data_in_db():
     Uploads CSV files into the database.
     """
     with sqlite3.connect(DB_FILE) as conn:
-        Athlete_Events_Details = pd.read_csv('Olympic_Athlete_Event_Details.csv')
-        Event_Results = pd.read_csv('Olympic_Event_Results.csv')
-        Athlete_Biography = pd.read_csv('Olympic_Athlete_Biography.csv')
-        Medal_Tally = pd.read_csv('Olympic_Medal_Tally_History.csv')
-        Games_Summary = pd.read_csv('Olympic_Games_Summary.csv')
-        Population_Total = pd.read_csv('population_total_long.csv')
-        Country_Profile = pd.read_csv('Olympic_Country_Profiles.csv')
+        Athlete_Events_Details = pd.read_csv('app/csv_files/Olympic_Athlete_Event_Details.csv')
+        Event_Results = pd.read_csv('app/csv_files/Olympic_Event_Results.csv')
+        Athlete_Biography = pd.read_csv('app/csv_files/Olympic_Athlete_Biography.csv')
+        Medal_Tally = pd.read_csv('app/csv_files/Olympic_Medal_Tally_History.csv')
+        Games_Summary = pd.read_csv('app/csv_files/Olympic_Games_Summary.csv')
+        Population_Total = pd.read_csv('app/csv_files/population_total_long.csv')
+        Country_Profile = pd.read_csv('app/csv_files/Olympic_Country_Profiles.csv')
 
         Athlete_Events_Details.to_sql('Athlete_Events_Details', conn, if_exists='replace', index=False)
         Event_Results.to_sql('Event_Results', conn, if_exists='replace', index=False)
