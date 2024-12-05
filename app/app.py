@@ -21,7 +21,7 @@ if selected_table:
 
 st.header("Preprocessing Steps")
 st.info("These will do preprocessing from Raw Data in database and also create new tables.")
-st.write()
+st.warning("This will truncate Preprcoessed tables")
 
 if st.button("Run Preprocessing"):
     preprocess_data()
@@ -30,6 +30,13 @@ st.write("**New Tables Created:**")
 st.write("- `Medal_Tally_Processed` (Total medals per country and year)")
 st.write("- `Athlete_Age_At_Competition` (Athletes' ages during competition)")
 st.write("- `Country_Medals_GDP` (Medals and GDP data combined)")
+
+st.header("Preprocessed available Tables")
+tables = ["PreprocessedTable1", "PreprocessedTable2"]
+
+selected_table = st.selectbox("Select Table to View/Modify", tables)
+if selected_table:
+    display_and_modify_table(st, selected_table)
 
 st.header("Olympic Trends Analysis")
 st.write("""
