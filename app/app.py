@@ -6,7 +6,7 @@ from dbcrud import upload_data_in_db
 st.title("Olympic Trends Analysis")
 
 st.header("Upload from Raw CSV files")
-st.warning("This will overwrite all existing data. Do it if you have think your tables have become modified incorrectly.")
+st.warning("This will overwrite all existing data if its exists otherwsie will just populate tables. Do it if you have think your tables have been modified incorrectly.")
 if st.button("Upload"):
     st.info("Uploading")
     upload_data_in_db()
