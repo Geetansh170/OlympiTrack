@@ -12,7 +12,7 @@ if st.button("Upload"):
     upload_data_in_db()
     st.info("Data has been successfully populated in Raw Tables")
 
-st.header("Raw available Tables")
+st.header("Available raw tables")
 tables = ["Athlete_Events_Details", "Event_Results", "Athlete_Biography",
           "Medal_Tally", "Games_Summary", "Population_Total", "Country_Profile"]
 
