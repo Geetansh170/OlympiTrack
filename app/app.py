@@ -59,5 +59,3 @@ if st.button("Run Hypothesis 3"):
 st.header("Hypothesis 4")
 if st.button("Run Hypothesis 4"):
      hypothesis4(st)
-
-st.info("Analysis for these hypotheses will be implemented soon.")
