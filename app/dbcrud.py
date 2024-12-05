@@ -150,6 +150,12 @@ def delete_entry(table, condition):
         conn.execute(sql)
         conn.commit()
 
+def execute_query(query, params=()):
+    with sqlite3.connect(DB_FILE) as conn:
+        cursor = conn.cursor()
+        cursor.execute(query, params)
+        conn.commit()
+
 # Example Usage
 if __name__ == "__main__":
     # create_tables()
