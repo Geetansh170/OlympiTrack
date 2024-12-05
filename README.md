@@ -57,3 +57,7 @@ The analysis aims to highlight advancements in women's participation in sports, 
 1. Table Tennis and Tennis are similar yet different sports. The players I have seen in both games seem to have different builds. The hypothesis is that we can build a model using Height, Weight, and athlete’s country to predict which sport they belong to.
 
 2. In athletics, height, weight, age, and country are major indicators of success in the Olympics. We have made models to achieve the same. (Predict the success/failure of athletics based on their height weight, and Country they belong to.)
+
+How to run the code:
+1. pip install -r requirements.txt
+2. streamlit run app/app.py
