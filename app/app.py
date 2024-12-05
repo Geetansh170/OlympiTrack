@@ -11,7 +11,7 @@ if st.button("Upload"):
 
 st.warning("This will overwrite all existing data.")
 
-st.header("Available Tables")
+st.header("Raw available Tables")
 tables = ["Athlete_Events_Details", "Event_Results", "Athlete_Biography",
           "Medal_Tally", "Games_Summary", "Population_Total", "Country_Profile"]
 
