@@ -1,4 +1,5 @@
 import streamlit as st
+from hypotheses import hypothesis1, hypothesis2, hypothesis3, hypothesis4
 from streamlit_helper import display_and_modify_table
 from preprocess import preprocess_data
 from dbcrud import upload_data_in_db
@@ -42,4 +43,21 @@ st.write("""
 3. **Athletes from countries with higher populations have a higher chance of reaching finals.**
 4. **Participation in team sports correlates with stronger performance in individual events.**
 """)
+
+st.header("Hypothesis 1")
+if st.button("Run Hypothesis 1"):
+     hypothesis1(st)
+
+st.header("Hypothesis 2")
+if st.button("Run Hypothesis 2"):
+     hypothesis2(st)
+
+st.header("Hypothesis 3")
+if st.button("Run Hypothesis 3"):
+     hypothesis3(st)
+
+st.header("Hypothesis 4")
+if st.button("Run Hypothesis 4"):
+     hypothesis4(st)
+
 st.info("Analysis for these hypotheses will be implemented soon.")

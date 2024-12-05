@@ -49,12 +49,14 @@ def hypothesis1(st):
     plt.legend(title='Trend')
     plt.show()
 
-    sports_trend[['sport', 'slope', 'mean', 'std', 'trend_label']]
-    print(sports_trend)
+    st.pyplot(plt)
 
-    print(f"Silhouette Score: {silhouette_avg}")
-    print(f"Davies-Bouldin Index: {davies_bouldin}")
-    print(f"Inertia: {inertia}")
+    sports_trend[['sport', 'slope', 'mean', 'std', 'trend_label']]
+    st.dataframe(sports_trend)
+
+    st.info(f"Silhouette Score: {silhouette_avg}")
+    st.info(f"Davies-Bouldin Index: {davies_bouldin}")
+    st.info(f"Inertia: {inertia}")
 
 def hypothesis2(st):
     pass
