@@ -2,6 +2,7 @@ import streamlit as st
 import pandas as pd
 import sqlite3
 
+from preprocess import preprocess_data
 from dbcrud import create_entry, delete_entry, read_entries, update_entry, upload_data_in_db
 
 DB_FILE = "app/olympics_data.db"
@@ -61,6 +62,18 @@ tables = ["Athlete_Events_Details", "Event_Results", "Athlete_Biography",
 selected_table = st.sidebar.selectbox("Select Table to View/Modify", tables)
 if selected_table:
     display_and_modify_table(selected_table)
+
+st.header("Preprocessing Steps")
+st.info("These will do preprocessing from Raw Data in database and also create new tables.")
+st.write()
+
+if st.button("Run Preprocessing"):
+    preprocess_data()
+
+st.write("**New Tables Created:**")
+st.write("- `Medal_Tally_Processed` (Total medals per country and year)")
+st.write("- `Athlete_Age_At_Competition` (Athletes' ages during competition)")
+st.write("- `Country_Medals_GDP` (Medals and GDP data combined)")
 
 st.header("Olympic Trends Analysis")
 st.write("""
