@@ -61,3 +61,6 @@ The analysis aims to highlight advancements in women's participation in sports, 
 How to run the code:
 1. pip install -r requirements.txt
 2. streamlit run app/app.py
+
+Public URL to access UI
+https://olympics-trends.streamlit.app/
