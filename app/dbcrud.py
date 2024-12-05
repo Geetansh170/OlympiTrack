@@ -152,33 +152,6 @@ def delete_entry(table, condition):
 
 # Example Usage
 if __name__ == "__main__":
-    # Create tables
-    create_tables()
-    
+    # create_tables()
     # Upload data from CSV files to the database
-    upload_data_in_db()
-
-    # CRUD Operations Examples
-    # 1. Create an entry in Athlete_Biography
-    create_entry("Athlete_Biography", {
-        "athlete_id": 12345,
-        "name": "John Doe",
-        "sex": "M",
-        "born": "1995-04-23",
-        "height": 1.83,
-        "weight": 75,
-        "country": "USA",
-        "country_noc": "USA",
-        "description": "Swimmer",
-        "special_notes": "Olympic gold medalist"
-    })
-
-    # 2. Read entries from Athlete_Biography
-    print("Reading Athlete Biographies:")
-    print(read_entries("Athlete_Biography"))
-
-    # 3. Update an entry in Athlete_Biography
-    update_entry("Athlete_Biography", {"height": 1.85}, "athlete_id = 12345")
-
-    # 4. Delete an entry in Athlete_Biography
-    delete_entry("Athlete_Biography", "athlete_id = 12345")
+    # upload_data_in_db()
