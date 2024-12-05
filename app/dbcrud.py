@@ -121,7 +121,7 @@ def upload_data_in_db():
         Population_Total.to_sql('Population_Total', conn, if_exists='replace', index=False)
         Country_Profile.to_sql('Country_Profile', conn, if_exists='replace', index=False)
 
-        print("Data uploaded successfully!")
+        print("Raw data has been uploaded successfully!")
 
 # CRUD Functions
 def create_entry(table, data):
@@ -154,4 +154,4 @@ def delete_entry(table, condition):
 if __name__ == "__main__":
     # create_tables()
     # Upload data from CSV files to the database
-    # upload_data_in_db()
+    upload_data_in_db()
