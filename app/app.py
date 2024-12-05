@@ -27,7 +27,7 @@ st.warning("This will truncate Preprcoessed tables")
 if st.button("Run Preprocessing"):
     preprocess_data()
 
-st.header("Preprocessed available Tables")
+st.header("Available Processed Tables")
 tables = ["Pre_Event_Results", "Pre_Population_Total", "Pre_Athlete_Biography", "Pre_Athlete_Events_Details", "Pre_Country_Profile"]
 
 selected_table = st.selectbox("Select Table to View/Modify", tables)
