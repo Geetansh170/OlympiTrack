@@ -23,7 +23,7 @@ if selected_table:
 
 st.header("Preprocessing Steps")
 st.info("These will do preprocessing from Raw Data in database and also create new tables.")
-st.warning("This will truncate Preprcoessed tables")
+st.warning("This will truncate Preprocessed tables")
 
 if st.button("Run Preprocessing"):
     preprocess_data()
