@@ -64,3 +64,25 @@ How to run the code:
 
 Public URL to access UI
 https://olympics-trends.streamlit.app/
+
+App folder structure
+app/
+    --- csv_files/
+        --- Olympic_Athlete_Biography.csv
+        --- Olympic_Athlete_Event_Details.csv
+        --- Olympic_Country_Profiles.csv
+        --- Olympic_Event_Results.csv
+        --- Olympic_Games_Summary.csv
+        --- Olympic_Medal_Tally_History.csv
+        --- population_total_long.csv
+
+    --- app.py (main streamlit file that needs to be used)
+    --- streamlit_helper.py (some helpers for streamlit)
+
+    --- olympics_data.db (stores all the raw and processed data in tables)
+
+    --- db_crud.py (database realted operationns CRUD)
+
+    --- preprocess.py (preprocessing of raw data script)
+    
+    --- hypothesis.py (4 hypothesis)
