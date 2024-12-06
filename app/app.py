@@ -38,10 +38,10 @@ if selected_table:
 st.header("Olympic Trends Analysis")
 st.write("""
 ### Hypotheses
-1. **Countries with higher GDP tend to win more medals.**
-2. **Host countries tend to perform better in terms of medal tally.**
-3. **Athletes from countries with higher populations have a higher chance of reaching finals.**
-4. **Participation in team sports correlates with stronger performance in individual events.**
+1. **What is the general trend in women participation country wise over the years? What countries are doing well and how do they compare to the best performing countries?**
+2. **Are there any sports which are on the decline and losing popularity among participants? Also, are there some sports which have gained popularity over the recent years?**
+3. **How do the trends in medal counts for team sports compare to those for individual sports across different countries over the years, and what insights can be drawn from these comparisons regarding each country's performance in the Olympic Games?**
+4. **In athletics, height, weight, age, and country are major indicators of success in the Olympics. We have made efforts to achieve the same.**
 """)
 
 st.header("Hypothesis 1")
