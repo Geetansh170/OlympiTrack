@@ -58,7 +58,7 @@ The analysis aims to highlight advancements in women's participation in sports, 
 
 2. In athletics, height, weight, age, and country are major indicators of success in the Olympics. We have made models to achieve the same. (Predict the success/failure of athletics based on their height weight, and Country they belong to.)
 
-How to run the code:
+# How to run the code:
 1. pip install -r requirements.txt
 2. streamlit run app/app.py
 
@@ -86,3 +86,13 @@ app/
     --- preprocess.py (preprocessing of raw data script)
     
     --- hypothesis.py (4 hypothesis)
+
+# What steps to follow for the App run? We have got you covered!
+
+1. Open the publicily hosted URL : https://olympics-trends.streamlit.app/
+2. Click the upload button to upload all the required datasets. You'll get a prompt stating the success.
+3. You'll be able to see all the tables and below you also have the add, delete and modify functionality for the selected table.
+4. Now, Click the run preprocessing button to run the preprocessing script (available in the code) and you'll get all the preprocessed tables which will be later used for ML models. Again you have the add, delete and modify functionality for the selected table.
+5. Below, is the list for all 4 hypthesis and 4 buttons for running
+6. Click run hypothesis one by one only.
+7. You'll see the visualizations and outputs for every hypothesis.
