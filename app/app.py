@@ -11,14 +11,26 @@ st.set_page_config(
     initial_sidebar_state="auto"
 )
 
-st.title("Olympic Trends Analysis")
-
 def safe_execute(func, error_message, *args, **kwargs):
     try:
         return func(*args, **kwargs)
     except Exception as e:
         st.error(f"{error_message}: {str(e)}")
         return None
+
+if "is_running" not in st.session_state:
+    st.session_state.is_running = False
+    st.session_state.running_hypothesis = None
+
+def start_running(hypothesis_name):
+    st.session_state.is_running = True
+    st.session_state.running_hypothesis = hypothesis_name
+
+def stop_running():
+    st.session_state.is_running = False
+    st.session_state.running_hypothesis = None
+
+st.title("Olympic Trends Analysis")
 
 st.header("Upload from Raw CSV files")
 st.warning("This will overwrite all existing data if it exists. Do this if you believe the tables have been modified incorrectly.")
@@ -61,17 +73,45 @@ st.write("""
 """)
 
 st.header("Hypothesis 1")
-if st.button("Run Hypothesis 1"):
-    safe_execute(hypothesis1, "Error while running Hypothesis 1", st)
+if st.button("Run Hypothesis 1", disabled=st.session_state.is_running):
+    start_running("Hypothesis 1")
+    try:
+        hypothesis1(st)
+        st.success("Hypothesis 1 executed successfully!")
+    except Exception as e:
+        st.error(f"Error while running Hypothesis 1: {str(e)}")
+    finally:
+        stop_running()
 
 st.header("Hypothesis 2")
-if st.button("Run Hypothesis 2"):
-    safe_execute(hypothesis2, "Error while running Hypothesis 2", st)
+if st.button("Run Hypothesis 2", disabled=st.session_state.is_running):
+    start_running("Hypothesis 2")
+    try:
+        hypothesis2(st)
+        st.success("Hypothesis 2 executed successfully!")
+    except Exception as e:
+        st.error(f"Error while running Hypothesis 2: {str(e)}")
+    finally:
+        stop_running()
 
 st.header("Hypothesis 3")
-if st.button("Run Hypothesis 3"):
-    safe_execute(hypothesis3, "Error while running Hypothesis 3", st)
+if st.button("Run Hypothesis 3", disabled=st.session_state.is_running):
+    start_running("Hypothesis 3")
+    try:
+        hypothesis3(st)
+        st.success("Hypothesis 3 executed successfully!")
+    except Exception as e:
+        st.error(f"Error while running Hypothesis 3: {str(e)}")
+    finally:
+        stop_running()
 
 st.header("Hypothesis 4")
-if st.button("Run Hypothesis 4"):
-    safe_execute(hypothesis4, "Error while running Hypothesis 4", st)
+if st.button("Run Hypothesis 4", disabled=st.session_state.is_running):
+    start_running("Hypothesis 4")
+    try:
+        hypothesis4(st)
+        st.success("Hypothesis 4 executed successfully!")
+    except Exception as e:
+        st.error(f"Error while running Hypothesis 4: {str(e)}")
+    finally:
+        stop_running()
