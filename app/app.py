@@ -4,6 +4,13 @@ from streamlit_helper import display_and_modify_table
 from preprocess import preprocess_data
 from dbcrud import upload_data_in_db
 
+st.set_page_config(
+    page_title="Olympic Trends Analysis",
+    page_icon=":book:",
+    layout="wide",
+    initial_sidebar_state="auto"
+)
+
 st.title("Olympic Trends Analysis")
 
 st.header("Upload from Raw CSV files")

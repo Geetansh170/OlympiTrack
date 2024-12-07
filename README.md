@@ -4,7 +4,7 @@ Geetansh Kumar - geetansh@buffalo.edu - 50607410
 
 Sataakshi Bhangelwal -  sataaksh@buffalo.edu - 50607324
 
-Rudraksh Aggarwal - rudraksh@buffalo.edu - 50604938
+Rudraksh Agarwal - rudraksh@buffalo.edu - 50604938
 
 # Navigation
 All the analysis for each group member can be found in the combined Python Notebook with proper section header names including the work and team member name in the header name.
