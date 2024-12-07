@@ -13,11 +13,18 @@ st.set_page_config(
 
 st.title("Olympic Trends Analysis")
 
+def safe_execute(func, error_message, *args, **kwargs):
+    try:
+        return func(*args, **kwargs)
+    except Exception as e:
+        st.error(f"{error_message}: {str(e)}")
+        return None
+
 st.header("Upload from Raw CSV files")
-st.warning("This will overwrite all existing data if its exists otherwise will just populate tables. Do it if you have think your tables have been modified incorrectly.")
+st.warning("This will overwrite all existing data if it exists. Do this if you believe the tables have been modified incorrectly.")
 if st.button("Upload"):
-    st.info("Uploading")
-    upload_data_in_db()
+    st.info("Uploading...")
+    safe_execute(upload_data_in_db, "Failed to upload data to the database.")
     st.info("Data has been successfully populated in Raw Tables")
 
 st.header("Available raw tables")
@@ -26,21 +33,23 @@ tables = ["Athlete_Events_Details", "Event_Results", "Athlete_Biography",
 
 selected_table = st.selectbox("Select Table to View/Modify", tables)
 if selected_table:
-    display_and_modify_table(st, selected_table)
+    safe_execute(display_and_modify_table, f"Failed to display or modify table: {selected_table}", st, selected_table)
 
 st.header("Preprocessing Steps")
-st.info("These will do preprocessing from Raw Data in database and also create new tables.")
-st.warning("This will truncate Preprocessed tables")
+st.info("These will do preprocessing from Raw Data in the database and create new tables.")
+st.warning("This will truncate preprocessed tables.")
 
 if st.button("Run Preprocessing"):
-    preprocess_data()
+    safe_execute(preprocess_data, "Failed to run preprocessing steps.")
+
 
 st.header("Available Processed Tables")
-tables = ["Pre_Event_Results", "Pre_Population_Total", "Pre_Athlete_Biography", "Pre_Athlete_Events_Details", "Pre_Country_Profile"]
+processed_tables = ["Pre_Event_Results", "Pre_Population_Total", "Pre_Athlete_Biography", 
+                    "Pre_Athlete_Events_Details", "Pre_Country_Profile"]
 
-selected_table = st.selectbox("Select Table to View/Modify", tables)
-if selected_table:
-    display_and_modify_table(st, selected_table)
+selected_processed_table = st.selectbox("Select Processed Table to View/Modify", processed_tables)
+if selected_processed_table:
+    safe_execute(display_and_modify_table, f"Failed to display or modify processed table: {selected_processed_table}", st, selected_processed_table)
 
 st.header("Olympic Trends Analysis")
 st.write("""
@@ -53,16 +62,16 @@ st.write("""
 
 st.header("Hypothesis 1")
 if st.button("Run Hypothesis 1"):
-     hypothesis1(st)
+    safe_execute(hypothesis1, "Error while running Hypothesis 1", st)
 
 st.header("Hypothesis 2")
 if st.button("Run Hypothesis 2"):
-     hypothesis2(st)
+    safe_execute(hypothesis2, "Error while running Hypothesis 2", st)
 
 st.header("Hypothesis 3")
 if st.button("Run Hypothesis 3"):
-     hypothesis3(st)
+    safe_execute(hypothesis3, "Error while running Hypothesis 3", st)
 
 st.header("Hypothesis 4")
 if st.button("Run Hypothesis 4"):
-     hypothesis4(st)
+    safe_execute(hypothesis4, "Error while running Hypothesis 4", st)
