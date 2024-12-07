@@ -1,19 +1,17 @@
-import sqlite3
 import pandas as pd
 import pandasql as ps
 from scipy.stats import linregress
 from sklearn.cluster import KMeans
 from sklearn.preprocessing import StandardScaler
-from sklearn.metrics import silhouette_score, davies_bouldin_score, confusion_matrix, f1_score, classification_report, accuracy_score
+from sklearn.metrics import silhouette_score, davies_bouldin_score, confusion_matrix, f1_score, accuracy_score
 import seaborn as sns
 import matplotlib.pyplot as plt
-from dbcrud import create_entry, delete_entry, read_entries, update_entry
+from dbcrud import read_entries
 import numpy as np
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 from sklearn.metrics import r2_score, mean_absolute_error, mean_squared_error
 import matplotlib.pyplot as plt
-import tensorflow as tf
 from tensorflow import keras
 from tensorflow.keras import layers
 from sklearn.tree import DecisionTreeRegressor, plot_tree
