@@ -1,11 +1,7 @@
 import sqlite3
 import pandas as pd
 import pandas as pd
-import numpy as np
-import matplotlib.pyplot as plt
-import seaborn as sns
-from pandasql import sqldf
-from dbcrud import create_entry, delete_entry, read_entries, update_entry
+from dbcrud import read_entries
 
 DB_FILE = "app/olympics_data.db"
 
@@ -16,15 +12,6 @@ def preprocess_data():
     Athlete_Biography = read_entries("Athlete_Biography")
     Population_Total = read_entries("Population_Total")
     Country_Profile = read_entries("Country_Profile")
-
-    print(Athlete_Events_Details.shape)
-    print(Event_Results.shape)
-    print(Athlete_Biography.shape)
-    # print(Medal_Tally.shape)
-    # print(Games_Summary.shape)
-    print(Population_Total.shape)
-
-
 
     Pre_Event_Results =  Event_Results.copy()
     Pre_Event_Results.drop_duplicates(inplace=True)
@@ -45,13 +32,10 @@ def preprocess_data():
     olympic_dummies = olympic_dummies.astype(int)
     Pre_Event_Results = pd.concat([Pre_Event_Results, olympic_dummies], axis=1)
 
-
-
     Pre_Population_Total = Population_Total.copy()
     Pre_Population_Total['Country Name'] = Pre_Population_Total['Country Name'].str.strip().str.lower()
     Pre_Population_Total.dropna(subset=['Country Name', 'Year', 'Count'], inplace=True)
     Pre_Population_Total['Year'] = Pre_Population_Total['Year'].replace(2017, 2020)
-
 
     Pre_Athlete_Biography = Athlete_Biography.copy()
     Pre_Athlete_Biography.drop_duplicates(inplace=True)
@@ -60,8 +44,6 @@ def preprocess_data():
     Pre_Athlete_Biography['sex'] = Pre_Athlete_Biography['sex'].str.strip().str.lower()
     Pre_Athlete_Biography['name'] = Pre_Athlete_Biography['name'].str.strip().str.lower()
     Pre_Athlete_Biography['born'] = Pre_Athlete_Biography['born'].str.strip().str.lower()
-
-
 
     Pre_Athlete_Events_Details = Athlete_Events_Details.copy()
     Pre_Athlete_Events_Details = Pre_Athlete_Events_Details.drop_duplicates()
@@ -77,11 +59,9 @@ def preprocess_data():
     Pre_Athlete_Events_Details['men'] = Pre_Athlete_Events_Details['event'].str.contains(r'\bmen\b', case=False).astype(int)
     Pre_Athlete_Events_Details['women'] = Pre_Athlete_Events_Details['event'].str.contains('women', case=False).astype(int)
 
-
     Pre_Country_Profile = Country_Profile.copy()
     Pre_Country_Profile['noc'] = Pre_Country_Profile['noc'].str.strip().str.lower()
     Pre_Country_Profile['country'] = Pre_Country_Profile['country'].str.strip().str.lower()
-
 
     with sqlite3.connect(DB_FILE) as conn:
         Pre_Event_Results.to_sql('Pre_Event_Results', conn, if_exists='replace', index=False)
