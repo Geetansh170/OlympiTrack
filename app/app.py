@@ -7,7 +7,7 @@ from dbcrud import upload_data_in_db
 st.set_page_config(
     page_title="Olympic Trends Analysis",
     page_icon=":book:",
-    layout="wide",
+    layout="centered",
     initial_sidebar_state="auto"
 )
 
