@@ -1,0 +1,12 @@
+pandasql
+matplotlib
+pandas
+numpy
+seaborn
+nbstripout
+scikit-learn
+xgboost
+streamlit
+watchdog
+scipy
+tensorflow
