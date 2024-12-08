@@ -428,6 +428,7 @@ def hypothesis4(st):
     Athletes_Data_Female = Athletes_Data[Athletes_Data['sex'] == 'F']
     sports = ['tennis', 'table tennis']
     Athletes_Data_Male_Popular = Athletes_Data_Male[Athletes_Data_Male['sport'].isin(sports)]
+    Athletes_Data_Female_Popular = Athletes_Data_Female[Athletes_Data_Female['sport'].isin(sports)]
 
     X = Athletes_Data_Male_Popular[['height', 'weight', 'country']]
     y = Athletes_Data_Male_Popular['sport']
@@ -441,6 +442,23 @@ def hypothesis4(st):
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
     st.subheader("Building a model for Male Athletes")
+
+    st.markdown("#### Height vs. Weight chart for Tennis and Table Tennis Athletes (Male)")
+    plt.figure(figsize=(10, 6))
+    for sport in sports:
+        sport_data = Athletes_Data_Male_Popular[Athletes_Data_Male_Popular['sport'] == sport]
+        plt.scatter(sport_data['height'], sport_data['weight'], label=sport, alpha=0.7)
+
+    plt.xlabel('Height')
+    plt.ylabel('Weight')
+    plt.title('Height vs. Weight for Tennis and Table Tennis Athletes')
+    plt.legend(title='Sport')
+    plt.grid(alpha=0.3)
+    plt.show()
+
+    st.pyplot(plt)
+
+
     st.write("We have run several models to find a model which could predict which an athlete belongs to")
     st.info("--------------------Logistic Regression results------------------------------")
 
@@ -476,10 +494,24 @@ def hypothesis4(st):
     st.info("Random forest gives the best result with accuracy of 95%")
 
     st.subheader("Building a model for female Athletes")
-    st.write("We have run several models to find a model which could predict which an athlete belongs to")
 
-    sports = ['tennis', 'table tennis']
-    Athletes_Data_Female_Popular = Athletes_Data_Female[Athletes_Data_Female['sport'].isin(sports)]
+    st.markdown("#### Height vs. Weight chart for Tennis and Table Tennis Athletes (Female)")
+    plt.figure(figsize=(10, 6))
+    for sport in sports:
+        sport_data = Athletes_Data_Female_Popular[Athletes_Data_Female_Popular['sport'] == sport]
+        plt.scatter(sport_data['height'], sport_data['weight'], label=sport, alpha=0.7)
+
+    # Add labels, title, and legend
+    plt.xlabel('Height')
+    plt.ylabel('Weight')
+    plt.title('Height vs. Weight for Tennis and Table Tennis Athletes')
+    plt.legend(title='Sport')
+    plt.grid(alpha=0.3)
+    plt.show()
+
+    st.pyplot(plt)
+
+    st.write("We have run several models to find a model which could predict which an athlete belongs to")
 
     X = Athletes_Data_Female_Popular[['height', 'weight', 'country']]
     y = Athletes_Data_Female_Popular['sport']
