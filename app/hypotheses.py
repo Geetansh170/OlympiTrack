@@ -17,9 +17,31 @@ from tensorflow.keras import layers
 from sklearn.tree import DecisionTreeRegressor, plot_tree
 from sklearn.ensemble import RandomForestRegressor,GradientBoostingClassifier, RandomForestClassifier
 from sklearn.preprocessing import LabelEncoder
-from sklearn.metrics import confusion_matrix, roc_curve, auc
+from sklearn.metrics import confusion_matrix
+from sklearn.svm import SVC
+from sklearn.ensemble import GradientBoostingClassifier, RandomForestClassifier
+from sklearn.linear_model import LogisticRegression
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.metrics import confusion_matrix, f1_score, classification_report, accuracy_score, roc_curve, auc
 
 DB_FILE = "app/olympics_data.db"
+
+def make_report(st, y_test, y_pred, sport_encoder):
+    st.write(f"Accuracy: {accuracy_score(y_test, y_pred)}")
+
+    report_dict = classification_report(y_test, y_pred, target_names=sport_encoder.classes_, output_dict=True)
+    report_df = pd.DataFrame(report_dict).transpose()
+    st.markdown("#### Classification Report")
+    st.dataframe(report_df)
+
+    conf_matrix = confusion_matrix(y_test, y_pred)
+    conf_matrix_df = pd.DataFrame(
+        conf_matrix,
+        index=sport_encoder.classes_,
+        columns=sport_encoder.classes_
+    )
+    st.markdown("#### Confusion Matrix")
+    st.dataframe(conf_matrix_df)
 
 def hypothesis1(st):
     Pre_Event_Results = read_entries("Pre_Event_Results")
@@ -81,25 +103,19 @@ def hypothesis2(st):
     Athlete_Events_Details_Mod = Pre_Athlete_Events_Details.merge(Pre_Country_Profile, left_on='country_noc', right_on='noc', how='left')
     Athlete_Events_Details_Mod.drop('noc', axis=1, inplace=True)
     Athlete_Events_Details_Mod.drop('country_noc', axis=1, inplace=True)
-    print(Athlete_Events_Details_Mod.shape)
-    print(Athlete_Events_Details_Mod.head(10))
 
     athlete_counts = Athlete_Events_Details_Mod.groupby(['country', 'year'])[['men', 'women']].sum().reset_index()
     athlete_counts = athlete_counts.rename(columns={'country': 'Country Name'})
 
-    print(athlete_counts)
 
     Pre_Population_Total['Year'] = Pre_Population_Total['Year'].astype(int)
     athlete_counts['year'] = athlete_counts['year'].astype(int)
     merged_data = pd.merge(athlete_counts, Pre_Population_Total, left_on=['Country Name', 'year'],right_on=['Country Name', 'Year'], how='left')
 
-    # print(merged_data)
     merged_data['percentage_women'] = (merged_data['women'] / merged_data['Count']) * 100
 
     merged_data['total'] = merged_data['men'] + merged_data['women']
     merged_data['percentage_women_better'] = (merged_data['women'] / merged_data['total']) * 100
-
-    print(merged_data[['Country Name', 'year', 'percentage_women','percentage_women_better']].head(20))
 
     merged_data = merged_data.dropna(subset=['percentage_women'])
 
@@ -107,9 +123,7 @@ def hypothesis2(st):
     max_val = merged_data['percentage_women'].max()
     merged_data['normalized_percentage_women'] = (merged_data['percentage_women'] - min_val) / (max_val - min_val)
 
-    print(merged_data)
     merged_data = merged_data.dropna(subset=['percentage_women'])
-
 
     merged_data = merged_data.dropna(subset=['percentage_women_better'])
     average_participation = merged_data.groupby('Country Name')['percentage_women_better'].mean().reset_index()
@@ -169,9 +183,6 @@ def hypothesis2(st):
     st.pyplot(plt)
 
     abs_r2 = abs(r2)
-    print(f"Absolute R² Score: {abs_r2:.3f}")
-    print(f"Mean Absolute Error: {mae:.3f}")
-    print(f"Future Predictions (2024-2040): {future_pred.flatten()}")
     target_countries = [ 'Netherlands', 'Peru', 'Canada', 'Singapore', 'Romania','malta','angola']
 
     fig, axes = plt.subplots(len(target_countries), 1, figsize=(10, 4 * len(target_countries)), sharex=True)
@@ -258,7 +269,6 @@ def hypothesis3(st):
 
     medals_yearwise_data_ger = ps.sqldf(query_ger, locals())
 
-    print(medals_yearwise_data_ger)
 
     query_ita = """
         SELECT
@@ -276,7 +286,6 @@ def hypothesis3(st):
 
     medals_yearwise_data_ita = ps.sqldf(query_ita, locals())
 
-    print(medals_yearwise_data_ita)
 
 
     query_aus = """
@@ -295,7 +304,7 @@ def hypothesis3(st):
 
     medals_yearwise_data_aus = ps.sqldf(query_aus, locals())
 
-    print(medals_yearwise_data_aus)
+    st.info(medals_yearwise_data_aus)
 
 
     query_ind = """
@@ -313,8 +322,6 @@ def hypothesis3(st):
         """
 
     medals_yearwise_data_ind = ps.sqldf(query_ind, locals())
-
-    print(medals_yearwise_data_ind)
 
     medals_yearwise_data_aus['isTeamSport'] = medals_yearwise_data_aus['isTeamSport'].apply(lambda x: 1 if x else 0)
 
@@ -399,16 +406,11 @@ def hypothesis3(st):
 
     st.info("We learnt that in case the parameters are interpretability and simplicity. It is clear that decision trees are way better and useful. But if we want better accuracy Random Forest is the more effective choice. We also understood that my Random Forest model could have been improved if there were more features. ")
 
-
-
-
 def hypothesis4(st):
-    Pre_Athlete_Events_Details = read_entries("Pre_Athlete_Events_Details")
-    Pre_Athlete_Biography = read_entries("Pre_Athlete_Biography")
-
-    Athletes_Data = Pre_Athlete_Events_Details.copy()
+    Athletes_Data = read_entries("Pre_Athlete_Events_Details")
+    Athlete_Biography = read_entries("Pre_Athlete_Biography")
     Athletes_Data = Athletes_Data[Athletes_Data['olympic_type'] == 'summer']
-    Athletes_Data = pd.merge(Athletes_Data, Pre_Athlete_Biography, on='athlete_id', how='left')
+    Athletes_Data = pd.merge(Athletes_Data, Athlete_Biography, on='athlete_id', how='left')
     Athletes_Data['sex'] = Athletes_Data.apply(lambda row: 'M' if row['men'] == 1 else 'F', axis=1)
     Athletes_Data['birth_year'] = Athletes_Data['born'].str.extract(r'(\d{4})')
     Athletes_Data['birth_year'] = pd.to_numeric(Athletes_Data['birth_year'], errors='coerce')
@@ -422,71 +424,103 @@ def hypothesis4(st):
 
     Athletes_Data = Athletes_Data.dropna(subset=['height', 'weight', 'medal', 'age', 'country'])
 
-    athletics_data = Athletes_Data[Athletes_Data['sport'] == 'athletics']
-    athletics_data['has_medal'] = athletics_data['medal'].apply(lambda x: 1 if x != 'no medal' else 0)
+    Athletes_Data_Male = Athletes_Data[Athletes_Data['sex'] == 'M']
+    Athletes_Data_Female = Athletes_Data[Athletes_Data['sex'] == 'F']
+    sports = ['tennis', 'table tennis']
+    Athletes_Data_Male_Popular = Athletes_Data_Male[Athletes_Data_Male['sport'].isin(sports)]
 
-    X = athletics_data[['height', 'weight', 'age', 'country']]
-    y = athletics_data['has_medal']
+    X = Athletes_Data_Male_Popular[['height', 'weight', 'country']]
+    y = Athletes_Data_Male_Popular['sport']
 
     country_encoder = LabelEncoder()
     X['country'] = country_encoder.fit_transform(X['country'])
 
+    sport_encoder = LabelEncoder()
+    y = sport_encoder.fit_transform(y)
+
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
-    models = {
-        "Random Forest": RandomForestClassifier(),
-        "Gradient Boosting": GradientBoostingClassifier(),
-    }
+    st.subheader("Building a model for Male Athletes")
+    st.write("We have run several models to find a model which could predict which an athlete belongs to")
+    st.info("--------------------Logistic Regression results------------------------------")
 
-    for name, model in models.items():
-        model.fit(X_train, y_train)
-        y_pred = model.predict(X_test)
-        accuracy = accuracy_score(y_test, y_pred)
-        f1 = f1_score(y_test, y_pred, average='weighted')
-        st.info(f"---{name}---")
-        st.info(f"Accuracy: {accuracy}")
-        st.info(f"F1 Score: {f1}")
+    lr_model = LogisticRegression(random_state=42)
+    lr_model.fit(X_train, y_train)
+    y_pred_lr = lr_model.predict(X_test)
+    make_report(st, y_test, y_pred_lr, sport_encoder)
 
-    # Iterate through models to evaluate
-    for name, model in models.items():
-        # Predict on the test set
-        y_pred = model.predict(X_test)
-        y_pred_proba = model.predict_proba(X_test)[:, 1] if hasattr(model, "predict_proba") else None
+    st.info("--------------------KNN results------------------------------")
+    knn_model = KNeighborsClassifier()
+    knn_model.fit(X_train, y_train)
+    y_pred_knn = knn_model.predict(X_test)
+    make_report(st, y_test, y_pred_knn, sport_encoder)
 
-        # Confusion Matrix
-        cm = confusion_matrix(y_test, y_pred)
-        fig, ax = plt.subplots(figsize=(6, 4))
-        im = ax.imshow(cm, interpolation="nearest", cmap="Blues")
-        ax.figure.colorbar(im, ax=ax)
-        ax.set(xticks=np.arange(cm.shape[1]),
-            yticks=np.arange(cm.shape[0]),
-            xticklabels=["No Medal", "Has Medal"],
-            yticklabels=["No Medal", "Has Medal"],
-            title=f"Confusion Matrix for {name}",
-            ylabel="Actual",
-            xlabel="Predicted")
+    st.info("--------------------SVM results----------------------------------------")
+    svm_model = SVC(random_state=42)
+    svm_model.fit(X_train, y_train)
+    y_pred_svm = svm_model.predict(X_test)
+    make_report(st, y_test, y_pred_svm, sport_encoder)
 
-        # Annotate the confusion matrix with numbers
-        fmt = 'd'
-        thresh = cm.max() / 2.
-        for i in range(cm.shape[0]):
-            for j in range(cm.shape[1]):
-                ax.text(j, i, format(cm[i, j], fmt),
-                        ha="center", va="center",
-                        color="white" if cm[i, j] > thresh else "black")
-        plt.show()
-        st.pyplot(plt)
+    st.info("--------------------Random Forest results------------------------------")
+    rf_model = RandomForestClassifier(random_state=42)
+    rf_model.fit(X_train, y_train)
+    y_pred_rf = rf_model.predict(X_test)
+    make_report(st, y_test, y_pred_rf, sport_encoder)
 
-        # ROC Curve (if model supports predict_proba)
-        if y_pred_proba is not None:
-            fpr, tpr, _ = roc_curve(y_test, y_pred_proba)
-            roc_auc = auc(fpr, tpr)
-            plt.figure(figsize=(6, 4))
-            plt.plot(fpr, tpr, color="blue", lw=2, label=f"ROC curve (AUC = {roc_auc:.2f})")
-            plt.plot([0, 1], [0, 1], color="gray", lw=2, linestyle="--")  # Diagonal line
-            plt.title(f"ROC Curve for {name}")
-            plt.xlabel("False Positive Rate")
-            plt.ylabel("True Positive Rate")
-            plt.legend(loc="lower right")
-            plt.show()
-            st.pyplot(plt)
+    st.info("--------------------Gradient Boost results-----------------------------")
+    gb_model = GradientBoostingClassifier(random_state=42)
+    gb_model.fit(X_train, y_train)
+    y_pred_gb = gb_model.predict(X_test)
+    make_report(st, y_test, y_pred_gb, sport_encoder)
+
+    st.info("Random forest gives the best result with accuracy of 95%")
+
+    st.subheader("Building a model for female Athletes")
+    st.write("We have run several models to find a model which could predict which an athlete belongs to")
+
+    sports = ['tennis', 'table tennis']
+    Athletes_Data_Female_Popular = Athletes_Data_Female[Athletes_Data_Female['sport'].isin(sports)]
+
+    X = Athletes_Data_Female_Popular[['height', 'weight', 'country']]
+    y = Athletes_Data_Female_Popular['sport']
+
+    country_encoder = LabelEncoder()
+    X['country'] = country_encoder.fit_transform(X['country'])
+
+    sport_encoder = LabelEncoder()
+    y = sport_encoder.fit_transform(y)
+
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+    st.info("--------------------Logistic Regression results------------------------------")
+
+    lr_model = LogisticRegression(random_state=42)
+    lr_model.fit(X_train, y_train)
+    y_pred_lr = lr_model.predict(X_test)
+    make_report(st, y_test, y_pred_lr, sport_encoder)
+
+    st.info("--------------------KNN results------------------------------")
+    knn_model = KNeighborsClassifier()
+    knn_model.fit(X_train, y_train)
+    y_pred_knn = knn_model.predict(X_test)
+    make_report(st, y_test, y_pred_knn, sport_encoder)
+
+    st.info("--------------------SVM results----------------------------------------")
+    svm_model = SVC(random_state=42)
+    svm_model.fit(X_train, y_train)
+    y_pred_svm = svm_model.predict(X_test)
+    make_report(st, y_test, y_pred_svm, sport_encoder)
+
+    st.info("--------------------Random Forest results------------------------------")
+    rf_model = RandomForestClassifier(random_state=42)
+    rf_model.fit(X_train, y_train)
+    y_pred_rf = rf_model.predict(X_test)
+    make_report(st, y_test, y_pred_rf, sport_encoder)
+
+    st.info("--------------------Gradient Boost results-----------------------------")
+    gb_model = GradientBoostingClassifier(random_state=42)
+    gb_model.fit(X_train, y_train)
+    y_pred_gb = gb_model.predict(X_test)
+    make_report(st, y_test, y_pred_gb, sport_encoder)
+
+    st.info("Random forest gives the best result with accuracy of 91%")

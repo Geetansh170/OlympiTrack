@@ -69,7 +69,7 @@ st.write("""
 1. **What is the general trend in women participation country wise over the years? What countries are doing well and how do they compare to the best performing countries?**
 2. **Are there any sports which are on the decline and losing popularity among participants? Also, are there some sports which have gained popularity over the recent years?**
 3. **How do the trends in medal counts for team sports compare to those for individual sports across different countries over the years, and what insights can be drawn from these comparisons regarding each country's performance in the Olympic Games?**
-4. **In athletics, height, weight, age, and country are major indicators of success in the Olympics. We have made efforts to achieve the same.**
+4. **Table Tennis and Tennis are similar yet different sports. The players we have seen in both games seem to have different builds. The hypothesis is that we can build a model using Height, Weight, and athlete’s country to predict which sport they belong to.**
 """)
 
 st.header("Hypothesis 1")
@@ -109,7 +109,7 @@ if st.button("Run Hypothesis 3", disabled=st.session_state.is_running):
         stop_running()
 
 st.header("Hypothesis 4")
-st.write("In athletics, height, weight, age, and country are major indicators of success in the Olympics. We have made efforts to achieve the same.")
+st.write("Table Tennis and Tennis are similar yet different sports. The players we have seen in both games seem to have different builds. The hypothesis is that we can build a model using Height, Weight, and athlete’s country to predict which sport they belong to.")
 if st.button("Run Hypothesis 4", disabled=st.session_state.is_running):
     start_running("Hypothesis 4")
     try:
