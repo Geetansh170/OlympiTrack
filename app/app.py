@@ -73,6 +73,7 @@ st.write("""
 """)
 
 st.header("Hypothesis 1")
+st.write("What is the general trend in women participation country wise over the years? What countries are doing well and how do they compare to the best performing countries?")
 if st.button("Run Hypothesis 1", disabled=st.session_state.is_running):
     start_running("Hypothesis 1")
     try:
@@ -84,6 +85,7 @@ if st.button("Run Hypothesis 1", disabled=st.session_state.is_running):
         stop_running()
 
 st.header("Hypothesis 2")
+st.write("Are there any sports which are on the decline and losing popularity among participants? Also, are there some sports which have gained popularity over the recent years?")
 if st.button("Run Hypothesis 2", disabled=st.session_state.is_running):
     start_running("Hypothesis 2")
     try:
@@ -95,6 +97,7 @@ if st.button("Run Hypothesis 2", disabled=st.session_state.is_running):
         stop_running()
 
 st.header("Hypothesis 3")
+st.write("How do the trends in medal counts for team sports compare to those for individual sports across different countries over the years, and what insights can be drawn from these comparisons regarding each country's performance in the Olympic Games?")
 if st.button("Run Hypothesis 3", disabled=st.session_state.is_running):
     start_running("Hypothesis 3")
     try:
@@ -106,6 +109,7 @@ if st.button("Run Hypothesis 3", disabled=st.session_state.is_running):
         stop_running()
 
 st.header("Hypothesis 4")
+st.write("In athletics, height, weight, age, and country are major indicators of success in the Olympics. We have made efforts to achieve the same.")
 if st.button("Run Hypothesis 4", disabled=st.session_state.is_running):
     start_running("Hypothesis 4")
     try:
