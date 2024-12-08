@@ -59,7 +59,7 @@ The analysis aims to highlight advancements in women's participation in sports, 
 2. In athletics, height, weight, age, and country are major indicators of success in the Olympics. We have made models to achieve the same. (Predict the success/failure of athletics based on their height weight, and Country they belong to.)
 
 # How to run the code:
-1. pip install -r requirements.txt
+1. pip install -r app/requirements.txt
 2. streamlit run app/app.py
 
 Public URL to access UI
