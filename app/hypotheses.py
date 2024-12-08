@@ -61,6 +61,9 @@ def hypothesis1(st):
     plt.show()
 
     st.pyplot(plt)
+    st.info("We have used the KMeans algorithm here because we already knew how many clusters we wanted and the K in this algorithm signifies exactly that. KMeans clustering is very good for data with multi dimensional features and capturing patterns.")
+    st.info("We see in our output that the clusters have been defined pretty clearly with slope and average participation being the deciding factors and the data is labeled as well now. We have successfully labeled the input unlabeled data.")
+    st.info("This visualization gives us a good idea on how to identify sports which are declining and need urgent attention in order to save them. Also, this gives us an idea on the rising sports which could be super beneficial for marketing, business and other opportunities. This proves our initial hypothesis correct.")
 
     sports_trend[['sport', 'slope', 'mean', 'std', 'trend_label']]
     st.dataframe(sports_trend)
@@ -210,6 +213,9 @@ def hypothesis2(st):
     plt.tight_layout(rect=[0, 0, 1, 0.97])
     plt.show()
     st.pyplot(plt)
+
+    st.info("")
+    st.info(" We have used DNN here with 3 hidden layers and linear activation at final layer. Our analysis says that the women participation percentage is bound to increase in the future, which is a great sign for world sports. The predicted increase helps us and all stakeholders understand the future progress of women participation in sports and olympics. This will help with better policies and awareness in the future. An increase in gender equality can be concluded from our future prediction analysis and intelligence gained.")
 
     st.info(f"Absolute R² Score: {abs_r2:.3f}")
     st.info(f"Mean Absolute Error: {mae:.3f}")
@@ -390,6 +396,8 @@ def hypothesis3(st):
     # Mean Squared Error masures the average squared difference between the predicted and actual values.
     st.info(f'R² score: {r2_score(y_test, y_pred_rf)}')
     st.info(f'Mean Squared Error: {mean_squared_error(y_test, y_pred_rf)}')
+
+    st.info("We learnt that in case the parameters are interpretability and simplicity. It is clear that decision trees are way better and useful. But if we want better accuracy Random Forest is the more effective choice. We also understood that my Random Forest model could have been improved if there were more features. ")
 
 
 
