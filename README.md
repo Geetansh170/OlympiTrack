@@ -6,6 +6,18 @@ Sataakshi Bhangelwal -  sataaksh@buffalo.edu - 50607324
 
 Rudraksh Agarwal - rudraksh@buffalo.edu - 50604938
 
+# Final Product Highlights
+
+App is CI/CD enabled, for every push in the main branch, the latest version is deployed to the public URL. This has been done like any other real production website. One-click deplot system.
+
+SQL Lite Database is persisted even on the public URL. So, the functionality is same for local and URL.
+
+Restart option given if anything goes wrong, you can again load from raw and pre-process it again.
+
+Querying enabled on both raw data and pre-processed data.
+
+Code is modularized and structure like a production level code. Easy to understand, scalable and error free.
+
 # Navigation
 All the analysis for each group member can be found in the combined Python Notebook with proper section header names including the work and team member name in the header name. (Phase 2 nb is the exp folder in DIC_Project_phase2.ipynb)
 
