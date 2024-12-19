@@ -7,11 +7,11 @@ Sataakshi Bhangelwal -  sataaksh@buffalo.edu - 50607324
 Rudraksh Agarwal - rudraksh@buffalo.edu - 50604938
 
 # Navigation
-All the analysis for each group member can be found in the combined Python Notebook with proper section header names including the work and team member name in the header name. (Phase 2 nb is the final NB)
+All the analysis for each group member can be found in the combined Python Notebook with proper section header names including the work and team member name in the header name. (Phase 2 nb is the exp folder in DIC_Project_phase2.ipynb)
 
 app/ contains the complete app code and at the you can see the steps for building and running the app.
 
-exp/ contains the final Python notebook and reports for all phases.
+exp/ contains the final Python notebook and reports for all phases including final reasearch paper format report.
 
 # A Deep Dive into Historical Olympic Performance Trends
 
