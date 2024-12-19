@@ -8,9 +8,9 @@ Rudraksh Agarwal - rudraksh@buffalo.edu - 50604938
 
 # Final Product Highlights
 
-App is CI/CD enabled, for every push in the main branch, the latest version is deployed to the public URL. This has been done like any other real production website. One-click deplot system.
+App is CI/CD enabled, for every push in the main branch, the latest version is deployed to the public URL. This has been done like any other real production website. One-click deployment system.
 
-SQL Lite Database is persisted even on the public URL. So, the functionality is same for local and URL.
+SQL Lite Database is persisted even on the public URL. So, the functionality is same for local and Public URL.
 
 Restart option given if anything goes wrong, you can again load from raw and pre-process it again.
 
